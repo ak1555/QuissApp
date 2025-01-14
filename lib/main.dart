@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quissapp/adminAddItems.dart';
 import 'package:quissapp/adminpage.dart';
 import 'package:quissapp/loginpage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,7 +14,7 @@ await Firebase.initializeApp(
 );
   runApp(
     MaterialApp(
-      home: Adminpage(),
+      home: AdminAddItems(),
     )
   );
 }
