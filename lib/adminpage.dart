@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quissapp/adminAddItems.dart';
+import 'package:quissapp/adminAddNewItem.dart';
 
 class Adminpage extends StatefulWidget {
   const Adminpage({super.key});
@@ -8,7 +10,9 @@ class Adminpage extends StatefulWidget {
 }
 
 class _AdminpageState extends State<Adminpage> {
-  List ls=['flutter','python'];
+  TextEditingController addnewfield = TextEditingController();
+  List ls = ['flutter', 'python'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +35,11 @@ class _AdminpageState extends State<Adminpage> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               color: Colors.grey.shade200),
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.grey.shade700,
+                            size: 60,
+                          ),
                         ),
                         Text(
                           "ADMIN",
@@ -71,7 +80,7 @@ class _AdminpageState extends State<Adminpage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      flex: 5,
+                      flex: 10,
                       child: Container(
                         height: 65,
                         width: double.infinity,
@@ -99,22 +108,29 @@ class _AdminpageState extends State<Adminpage> {
                             )),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                    child: GestureDetector(
+                    GestureDetector(
                       onTap: () {
-                        // ===== + 
+
+                        Navigator.push(context,  MaterialPageRoute(builder: (context) => AdminAddNewItem(),));
                       },
                       child: Container(
+                        height: 65,
+                        width: 65,
                         decoration: BoxDecoration(
-                          border: Border.all(width: 0),
-                          borderRadius: BorderRadius.circular(25),
-                          gradient: LinearGradient(colors: [Colors.deepPurple.shade400,Colors.deepPurple.shade400])
-                        ),
+                            border: Border.all(width: 0),
+                            borderRadius: BorderRadius.circular(100),
+                            gradient: LinearGradient(colors: [
+                              Colors.deepPurple.shade400,
+                              Colors.deepPurple.shade400
+                            ])),
                         alignment: Alignment.center,
-                        child: Icon(Icons.add,weight: 25,size: 35,color: Colors.white,),
+                        child: Icon(
+                          Icons.add,
+                          weight: 25,
+                          size: 35,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
                     )
                   ],
                 ),
@@ -129,22 +145,35 @@ class _AdminpageState extends State<Adminpage> {
                 child: ListView.builder(
                   itemCount: ls.length,
                   itemBuilder: (context, index) {
-                  return Container(
-                    height: 90,
-                    width: double.infinity,
-                    margin: EdgeInsets.only(top: 15),
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(colors: [
-                      Colors.deepPurpleAccent.shade400,
-                      Colors.purple.shade200,
-                      ])
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(ls[index].toString(),style: TextStyle(fontSize: 20,color: Colors.white),),
-                  );
-                },),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AdminAddItems(),
+                            ));
+                      },
+                      child: Container(
+                        height: 80,
+                        width: double.infinity,
+                        margin: EdgeInsets.only(top: 15),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          ls[index].toString(),
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              letterSpacing: 1),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               )
             ])));
   }

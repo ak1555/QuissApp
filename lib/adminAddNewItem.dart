@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AdminAddItems extends StatefulWidget {
-  const AdminAddItems({super.key});
+class AdminAddNewItem extends StatefulWidget {
+  const AdminAddNewItem({super.key});
 
   @override
-  State<AdminAddItems> createState() => _AdminAddItemsState();
+  State<AdminAddNewItem> createState() => _AdminAddNewItemState();
 }
 
-class _AdminAddItemsState extends State<AdminAddItems> {
+class _AdminAddNewItemState extends State<AdminAddNewItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,12 +18,12 @@ class _AdminAddItemsState extends State<AdminAddItems> {
         padding: EdgeInsets.all(5),
         child: ListView(
           children: [
-            Center(
-              child: Text(
-                'Flutter',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              ),
-            ),
+            // Center(
+            //   child: Text(
+            //     'Flutter',
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+            //   ),
+            // ),
             SizedBox(
               height: 10,
             ),
@@ -31,7 +31,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Add Questions',
+                  'Add Topic',
                   style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                 ),
                 CupertinoButton(
@@ -41,6 +41,26 @@ class _AdminAddItemsState extends State<AdminAddItems> {
               ],
             ),
             Divider(),
+            Container(
+              height: 55,
+              width: double.infinity,
+              padding: EdgeInsets.only(left: 5,right: 5),
+              decoration: BoxDecoration(
+                border: Border.all(width: 2,color: Colors.grey.shade800),
+                borderRadius: BorderRadius.circular(5)
+              ),
+              child: Expanded(child: TextField(
+                      decoration: InputDecoration(
+                          // border: OutlineInputBorder(  borderSide: BorderSide(style: BorderStyle.solid,color: Colors.black,width: 2,strokeAlign: 2)),
+                          border: InputBorder.none,
+                          labelText: "Enter New Topic Name"),
+                    )),
+            ),
+            SizedBox(height: 15,),
+               Text(
+                  'Add Questions',
+                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
+                ),
             Container(
               height: 205,
               width: double.infinity,
@@ -142,7 +162,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
               height: 20,
             ),
             Text(
-              'Flutter Questions',
+              'Questions',
               style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
             ),
             Divider(),
