@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quissapp/adminAddItems.dart';
 import 'package:quissapp/adminAddNewItem.dart';
@@ -142,16 +143,70 @@ class _AdminpageState extends State<Adminpage> {
               Container(
                 height: 550,
                 width: double.infinity,
-                child: ListView.builder(
-                  itemCount: ls.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
+                // child: ListView.builder(
+                //   itemCount: ls.length,
+                //   itemBuilder: (context, index) {
+                //     return GestureDetector(
+                //       onTap: () {
+                //         Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => AdminAddItems(),
+                //             ));
+                //       },
+                //       child: Container(
+                //         height: 80,
+                //         width: double.infinity,
+                //         margin: EdgeInsets.only(top: 15),
+                //         decoration: BoxDecoration(
+                //           border: Border.all(),
+                //           borderRadius: BorderRadius.circular(20),
+                //         ),
+                //         alignment: Alignment.center,
+                //         child: Text(
+                //           ls[index].toString(),
+                //           style: TextStyle(
+                //               fontSize: 20,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.black,
+                //               letterSpacing: 1),
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
+                child:  StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('topics').orderBy("language").snapshots(),
+          builder: (context, snapshot) {
+            print(snapshot.data!.docs.length);
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                final DocumentSnapshot todosnapshot =
+                    snapshot.data!.docs[index];
+
+                // return ListTile(
+                //   title: Text(todosnapshot["language"].toString()),
+                //   trailing: IconButton(onPressed: () {
+                //     //  deletetodo(todosnapshot.id);
+                //      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Item Deleted")));
+                //   }, icon: Icon(Icons.delete_outline)),
+                //   onTap: () {
+                //     // print(todosnapshot.id);
+                //     // List ls=[todosnapshot.id,
+                //     // todosnapshot["task"].toString()
+                //     // ];
+                //     // Navigator.pushNamed(context, "update",arguments:ls);
+                //   },
+                // );
+                return GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AdminAddItems(),
-                            ));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => AdminAddItems(),
+                        //     ));
+                        Navigator.pushNamed(context,  "\adminadditems",arguments: todosnapshot['language'].toString() );
                       },
                       child: Container(
                         height: 80,
@@ -163,7 +218,7 @@ class _AdminpageState extends State<Adminpage> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          ls[index].toString(),
+                          todosnapshot['language'].toString(),
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -172,8 +227,10 @@ class _AdminpageState extends State<Adminpage> {
                         ),
                       ),
                     );
-                  },
-                ),
+              },
+            );
+          },
+      ),
               )
             ])));
   }

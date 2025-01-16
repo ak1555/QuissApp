@@ -17,9 +17,10 @@ await Firebase.initializeApp(
 );
   runApp(
     MaterialApp(
-      home: Adminpage(),
+      home: Userpage(),
       routes: {
         "\examwitingpage":(context)=>ExamWritingPage(),
+        "\adminadditems":(context)=>AdminAddItems(),
       },
     )
   );

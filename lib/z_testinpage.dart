@@ -279,6 +279,40 @@ class _QuizScreenState extends State<QuizScreen> {
                         ),
                       ),
                     ),
+
+
+
+      //                StreamBuilder(
+      //     stream: todos.orderBy("task").snapshots(),
+      //     builder: (context, snapshot) {
+      //       print(snapshot.data!.docs.length);
+      //       return ListView.builder(
+      //         itemCount: snapshot.data!.docs.length,
+      //         itemBuilder: (context, index) {
+      //           final DocumentSnapshot todosnapshot =
+      //               snapshot.data!.docs[index];
+
+      //           return ListTile(
+      //             title: Text(todosnapshot["task"].toString()),
+      //             trailing: IconButton(onPressed: () {
+      //                deletetodo(todosnapshot.id);
+      //                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Item Deleted")));
+      //             }, icon: Icon(Icons.delete_outline)),
+      //             onTap: () {
+      //               print(todosnapshot.id);
+      //               List ls=[todosnapshot.id,
+      //               todosnapshot["task"].toString()
+      //               ];
+      //               Navigator.pushNamed(context, "update",arguments:ls);
+      //             },
+      //           );
+      //         },
+      //       );
+      //     },
+      // ),
+
+
+      
                   ],
                 ),
               ),
