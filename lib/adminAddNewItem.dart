@@ -220,14 +220,14 @@ actions: [TextButton(onPressed: () {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: 100,
+                        width: 135,
                         height: 40,
                         child: Expanded(
                             child: TextField(
                                controller: answer,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: "Answer"),
+                              labelText: "Correct option"),
                         )),
                       ),
                       CupertinoButton(

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quissapp/adminAddItems.dart';
 import 'package:quissapp/adminAddNewItem.dart';
+import 'package:quissapp/resultpage.dart';
 
 class Adminpage extends StatefulWidget {
   const Adminpage({super.key});
@@ -60,7 +62,10 @@ class _AdminpageState extends State<Adminpage> {
                                 TextButton(
                                     onPressed: () {}, child: Text('Add Admin')),
                                 TextButton(
-                                    onPressed: () {}, child: Text('logout')),
+                                    onPressed: () async{
+                                        await FirebaseAuth.instance.signOut();
+                                          Navigator.popUntil(context, (route) => route.isFirst,);
+                                    }, child: Text('logout')),
                               ],
                             ));
                           },
@@ -98,7 +103,7 @@ class _AdminpageState extends State<Adminpage> {
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent),
                             onPressed: () {
-                              print('textbutton');
+                             Navigator.push(context, MaterialPageRoute(builder: (context) =>ResultPage() ,));
                             },
                             child: Text(
                               'Results',
@@ -209,7 +214,7 @@ class _AdminpageState extends State<Adminpage> {
                         Navigator.pushNamed(context,  "\adminadditems",arguments: todosnapshot['language'].toString() );
                       },
                       child: Container(
-                        height: 80,
+                        height: 75,
                         width: double.infinity,
                         margin: EdgeInsets.only(top: 15),
                         decoration: BoxDecoration(

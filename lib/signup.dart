@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quissapp/userpage.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -9,9 +12,46 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  @override
-  TextEditingController username = TextEditingController();
+
+   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController Cpassword = TextEditingController();
+
+
+   Future<void> registerUser() async {
+    if (password.text==Cpassword.text) {
+      try {
+      // Create user
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: username.text.trim(),
+        password: password.text.trim(),
+      );
+
+      // Save user data in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'username': username.text.trim(),
+        'role': "user",
+      });
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Userpage(),));
+    } catch (e) {
+      print(
+          "================================================================================error");
+      print('Error registering user: $e');
+    }
+    } else {
+      showDialog(context: context, builder: (context) {
+      return  AlertDialog(
+          title: Text('missmatch password'),
+        );
+      },);
+    }
+  }
+  @override
+ 
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -76,7 +116,7 @@ class _SignUpState extends State<SignUp> {
                     //   children: [
                     Expanded(
                         child: TextField(
-                  controller: password,
+                  controller: Cpassword,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Conform-password',
@@ -90,16 +130,15 @@ class _SignUpState extends State<SignUp> {
                   // style: TextButton.styleFrom(backgroundColor: Colors.green),
                   // color: Colors.green,
                   color: Colors.deepPurple.shade300,
-                  padding:
-                      EdgeInsets.only(left: 75, right: 75, top: 15, bottom: 15),
+                  // padding:
+                      // EdgeInsets.only(left: 75, right: 75, top: 15, bottom: 15),
                   onPressed: () {
-                    // registerUser();
-                    // login();
+                    registerUser();
                   },
                   child: Text(
                     'Register & Signup',
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         letterSpacing: 1,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),

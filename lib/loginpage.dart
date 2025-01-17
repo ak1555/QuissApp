@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quissapp/adminpage.dart';
+import 'package:quissapp/signup.dart';
 import 'package:quissapp/userpage.dart';
 
 class Loginpage extends StatefulWidget {
@@ -95,6 +96,7 @@ class _LoginpageState extends State<Loginpage> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: usrname.text.trim(), password: pswd.text.trim());
+
       checkUserRole();
     } catch (e) {
       print(
@@ -106,7 +108,7 @@ class _LoginpageState extends State<Loginpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.white70,
+      // backgroundColor: Colors.deepPurple.shade100,
       body: SafeArea(
         child: Container(
           height: double.infinity,
@@ -115,7 +117,13 @@ class _LoginpageState extends State<Loginpage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text("Login",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,letterSpacing: 1),),
+              SizedBox(
+                height: 1,
+              ),
+              Text("Login",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,letterSpacing: 1.5),),
+
+              Text("Welcome to E-Learning platform",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,letterSpacing: 1),),
+            
               SizedBox(
                 height: 15,
               ),
@@ -126,7 +134,8 @@ class _LoginpageState extends State<Loginpage> {
                     child: TextField(
                   controller: usrname,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade400)),
+                    fillColor: Colors.white,filled: true,
                     labelText: 'username',
                   ),
                 )),
@@ -141,7 +150,8 @@ class _LoginpageState extends State<Loginpage> {
                         child: TextField(
                   controller: pswd,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'password'),
+                    fillColor: Colors.white,filled: true,
+                      border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade400)), labelText: 'password'),
                 )),
                 // Row(children: [
                 //   CupertinoButton(sizeStyle: CupertinoButtonSize.small,
@@ -167,12 +177,22 @@ class _LoginpageState extends State<Loginpage> {
                   },
                   child: Text(
                     'Login',
-                    style: TextStyle(fontSize: 20,letterSpacing: 1,
+                    style: TextStyle(fontSize: 19,letterSpacing: 1,
                         fontWeight: FontWeight.bold, color: Colors.black),
                   )),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
+              Column(
+                children: [
+                  Text("Don't have an account yet?"),
+                  CupertinoButton(
+                    sizeStyle: CupertinoButtonSize.small,
+                    child: Text('Signup'), onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp(),));
+                  },),
+                ],
+              )
             ],
           ),
         ),

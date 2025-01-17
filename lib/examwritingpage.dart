@@ -14,6 +14,10 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
 
   List answers = [];
 
+  int totalmark = 0;
+  int total = 0;
+  int outoff = 0;
+
   // final List<Map<String, dynamic>> _questions = [];
   List _questions = [
     1,
@@ -49,37 +53,105 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
   ];
 
   // State to store selected answers and their correctness
-  List<int?> _selectedAnswers = [];
+  List _selectedAnswers = [];
 
-  // void fetchDataFromFirestore() async {
-  //   print("fetchdatafrom firebase");
-  //   print(topicname);
-  //   try {
-  //     // Reference to the Firestore collection
-  //     final CollectionReference usersCollection =
-  //         FirebaseFirestore.instance.collection('${topicname}');
+  void fetchDataFromFirestore() async {
+    List<Map<String, dynamic>> firebasedata = [];
 
-  //     // Get documents from the collection
-  //     final QuerySnapshot snapshot = await usersCollection.get();
+    print("fetchdatafrom firebase");
+    print(topicname);
+    try {
+      // Reference to the Firestore collection
+      final CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('${topicname}');
 
-  //     // Convert documents into a list of maps
-  //     final List<Map<String, dynamic>> users = snapshot.docs.map((doc) {
-  //       return doc.data() as Map<String, dynamic>;
-  //     }).toList();
+      // Get documents from the collection
+      final QuerySnapshot snapshot = await usersCollection.get();
 
-  //     setState(() {
-  //       _questions.addAll(users);
-  //     });
-  //   } catch (e) {
-  //     print('Error fetching data: $e');
-  //     print('::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
-  //     print(topicname);
-  //   }
-  //   print(_questions);
-  // }
+      // Convert documents into a list of maps
+      final List<Map<String, dynamic>> users = snapshot.docs.map((doc) {
+        return doc.data() as Map<String, dynamic>;
+      }).toList();
 
-  void s() {
-    print(_selectedAnswers);
+      setState(() {
+        firebasedata.addAll(users);
+      });
+// =====================================================================================================
+      List li = [];
+      List lii = [];
+      List<int> ls = [];
+      for (var i = 0; i < firebasedata.length; i++) {
+        li.add(firebasedata[i]['answer']);
+      }
+      for (var i = li.length - 1; i >= 0; i--) {
+        lii.add(int.parse(li[i]));
+      }
+      for (var i = 0; i < lii.length; i++) {
+        lii[i] = lii[i] - 1;
+      }
+
+      print(li);
+      print(lii);
+      print(_selectedAnswers);
+      print(
+          "===================================================================== Exam result");
+// for (var i = 0; i < li.length; i++) {
+//   ls.add(int.parse(_selectedAnswers[]))
+// }
+
+      for (var i = 0; i < li.length; i++) {
+        print("loop one add");
+        if (lii[i] == _selectedAnswers[i]) {
+          setState(() {
+            totalmark = totalmark + 1;
+            print("plus one");
+          });
+        }
+      }
+      print(
+          "===================================================================== Exam result");
+      final l = FirebaseAuth.instance.currentUser!.email;
+
+  if (_selectedAnswers[0]!=null) {
+    //  print("NNNNNNNNNNNNOOOOOOOOOOOTTTTTTTTTeeeeeeeeeeemmmmmmmmmppppppppppppptttttttttyyyyyyyyyy");
+    
+        await FirebaseFirestore.instance.collection('result').add({
+        "username": l,
+        "usersAnswers": lii,
+        "correctAnswer": _selectedAnswers
+      });
+  }else{
+    print("eeeeeeeeeeeeeeeeeeeeeemmmmmmmmmmmmmmmmmmmmmmmmppppppppppppppppppppppppttttttttttttttttttttttyyyyyyyyyyyyyyyyyyy");
+  }
+      print(
+          "===================================================================== Exam result");
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title:totalmark>=outoff/2? Text('you Won!'):Text('you Got!'),
+            content: Text('${totalmark} Marks'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("OK"))
+            ],
+          );
+        },
+      );
+
+// =====================================================================================================
+    } catch (e) {
+      print('Error fetching data: $e');
+      print(
+          '::::::::::::::::::::::::::::Error in catch::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
+      print(e);
+    }
+    print(
+        '::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
+    print(firebasedata);
   }
 
   @override
@@ -123,7 +195,7 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("10/10",
+                  Text("${total}/${outoff}",
                       // topicname.toString(),
                       style: TextStyle(
                           fontSize: 15,
@@ -145,6 +217,7 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent),
                         onPressed: () async {
+                          fetchDataFromFirestore();
                           print(_selectedAnswers);
 
                           // final currentuser =
@@ -227,11 +300,17 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   print(snapshot.data!.docs.length);
+
+                  outoff = snapshot.data!.docs.length;
+
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       final DocumentSnapshot todosnapshot =
                           snapshot.data!.docs[index];
+                      // setState(() {
+                      // outoff=outoff+1;
+                      // });
                       // print("==============================================================");
                       // print(todosnapshot['question']);
 
@@ -276,6 +355,7 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
                                     onChanged: (value) {
                                       setState(() {
                                         _selectedAnswers[index] = value;
+                                        total = total + 1;
                                       });
                                     },
                                   ),

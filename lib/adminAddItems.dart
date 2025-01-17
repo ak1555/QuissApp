@@ -141,9 +141,20 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Container(
+                        width: 135,
+                        height: 40,
+                        child: Expanded(
+                            child: TextField(
+                               controller: answer,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Correct option"),
+                        )),
+                      ),
                       CupertinoButton(
                         sizeStyle: CupertinoButtonSize.small,
                         color: Colors.blue,
@@ -177,7 +188,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
             ),
             
                      Container(
-                      height: 450,
+                      height: 490,
                       width: double.infinity,
                        child: StreamBuilder(
                                  stream: FirebaseFirestore.instance.collection('${languagename.toString()}').orderBy("question").snapshots(),
@@ -276,7 +287,8 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                                     decoration: BoxDecoration(
                                         border: Border.all(color: Colors.green),borderRadius: BorderRadius.circular(5)),
                                     child: Text('Answer: ${ todosnapshot["answer"].toString()}',),
-                                  )
+                                  ),
+                                  SizedBox(height: 20,)
                                      ],
 
                                    );

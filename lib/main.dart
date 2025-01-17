@@ -17,7 +17,7 @@ await Firebase.initializeApp(
 );
   runApp(
     MaterialApp(
-      home: Userpage(),
+      home: Loginpage(),
       routes: {
         "\examwitingpage":(context)=>ExamWritingPage(),
         "\adminadditems":(context)=>AdminAddItems(),
