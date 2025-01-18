@@ -26,6 +26,12 @@ class _AdminAddItemsState extends State<AdminAddItems> {
       "options": li,
       "answer":answer.text
     });
+    Question.clear();
+    Option1.clear();
+    option2.clear();
+    option3.clear();
+    option4.clear();
+    answer.clear();
    }
   @override
   Widget build(BuildContext context) {
@@ -39,7 +45,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
           children: [
             Center(
               child: Text(
-                'Flutter',
+                languagename.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
             ),
@@ -179,7 +185,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
               height: 20,
             ),
             Text(
-              'Flutter Questions',
+              '${languagename} Questions',
               style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
             ),
             Divider(),

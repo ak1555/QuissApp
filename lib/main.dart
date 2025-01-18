@@ -4,6 +4,7 @@ import 'package:quissapp/adminpage.dart';
 import 'package:quissapp/examwritingpage.dart';
 import 'package:quissapp/loginpage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:quissapp/mainpage1.dart';
 import 'package:quissapp/signup.dart';
 import 'package:quissapp/userpage.dart';
 import 'package:quissapp/z_testinpage.dart';
@@ -17,7 +18,7 @@ await Firebase.initializeApp(
 );
   runApp(
     MaterialApp(
-      home: Loginpage(),
+      home: MainPage(),
       routes: {
         "\examwitingpage":(context)=>ExamWritingPage(),
         "\adminadditems":(context)=>AdminAddItems(),

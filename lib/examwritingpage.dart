@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quissapp/userpage.dart';
 
 class ExamWritingPage extends StatefulWidget {
   const ExamWritingPage({super.key});
@@ -51,15 +52,16 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
     29,
     30
   ];
+  List mmmmmmm=[];
 
   // State to store selected answers and their correctness
   List _selectedAnswers = [];
-
+List _correctness=[];
   void fetchDataFromFirestore() async {
     List<Map<String, dynamic>> firebasedata = [];
 
-    print("fetchdatafrom firebase");
-    print(topicname);
+    print(" ===================================================================================================== fetchdatafrom firebase");
+    print(_correctness);
     try {
       // Reference to the Firestore collection
       final CollectionReference usersCollection =
@@ -77,37 +79,42 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
         firebasedata.addAll(users);
       });
 // =====================================================================================================
-      List li = [];
-      List lii = [];
-      List<int> ls = [];
-      for (var i = 0; i < firebasedata.length; i++) {
-        li.add(firebasedata[i]['answer']);
-      }
-      for (var i = li.length - 1; i >= 0; i--) {
-        lii.add(int.parse(li[i]));
-      }
-      for (var i = 0; i < lii.length; i++) {
-        lii[i] = lii[i] - 1;
-      }
+//       List li = [];
+//       List lii = [];
+//       List<int> ls = [];
+//       for (var i = 0; i < firebasedata.length; i++) {
+//         li.add(firebasedata[i]['answer']);
+//       }
+//       for (var i = li.length - 1; i >= 0; i--) {
+//         lii.add(int.parse(li[i]));
+//       }
+//       for (var i = 0; i < lii.length; i++) {
+//         lii[i] = lii[i] - 1;
+//       }
 
-      print(li);
-      print(lii);
-      print(_selectedAnswers);
-      print(
-          "===================================================================== Exam result");
-// for (var i = 0; i < li.length; i++) {
-//   ls.add(int.parse(_selectedAnswers[]))
-// }
+//       print(li);
+//       print(lii);
+//       print(_selectedAnswers);
+//       print(
+//           "===================================================================== Exam result");
+// // for (var i = 0; i < li.length; i++) {
+// //   ls.add(int.parse(_selectedAnswers[]))
+// // }
 
-      for (var i = 0; i < li.length; i++) {
-        print("loop one add");
-        if (lii[i] == _selectedAnswers[i]) {
-          setState(() {
-            totalmark = totalmark + 1;
-            print("plus one");
-          });
-        }
-      }
+//       for (var i = 0; i < li.length; i++) {
+//         print("loop one add");
+//         if (lii[i] == _selectedAnswers[i]) {
+//           setState(() {
+//             totalmark = totalmark + 1;
+//             print("plus one");
+//           });
+//         }
+//       }
+for (var i = 0; i < _correctness.length; i++) {
+  if (_correctness[i]=true) {
+    totalmark=totalmark+1;
+  }
+}
       print(
           "===================================================================== Exam result");
       final l = FirebaseAuth.instance.currentUser!.email;
@@ -115,11 +122,29 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
   if (_selectedAnswers[0]!=null) {
     //  print("NNNNNNNNNNNNOOOOOOOOOOOTTTTTTTTTeeeeeeeeeeemmmmmmmmmppppppppppppptttttttttyyyyyyyyyy");
     
+
+
+
+
+
         await FirebaseFirestore.instance.collection('result').add({
         "username": l,
-        "usersAnswers": lii,
+        "totalmark": totalmark,
+        "usersAnswers": _correctness,
         "correctAnswer": _selectedAnswers
       });
+
+
+
+
+
+
+
+
+
+
+
+
   }else{
     print("eeeeeeeeeeeeeeeeeeeeeemmmmmmmmmmmmmmmmmmmmmmmmppppppppppppppppppppppppttttttttttttttttttttttyyyyyyyyyyyyyyyyyyy");
   }
@@ -129,15 +154,40 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title:totalmark>=outoff/2? Text('you Won!'):Text('you Got!'),
-            content: Text('${totalmark} Marks'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("OK"))
-            ],
+            shadowColor:totalmark>=outoff/2? Colors.green:Colors.red ,
+            // title:totalmark>=outoff/2? Text('you Won!'):Text('you Got!'),
+            title: Container(
+              height: 250,
+              width: 250,
+             decoration: BoxDecoration(
+               color: totalmark>=outoff/2? Colors.green:Colors.red,
+               borderRadius: BorderRadius.circular(10)
+             ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                    totalmark>=outoff/2? Text("Congrats...",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)):Text("Oops!",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                  totalmark>=outoff/2? Text("you won"):Text("you only got!"),
+                  totalmark>=outoff/2? Text("Mark: ${totalmark}/${outoff}",style: TextStyle(fontSize: 15)):Text("Mark: ${totalmark}/${outoff}",style: TextStyle(fontSize: 15)),
+                  
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: totalmark>=outoff/2? Colors.grey:Colors.grey,
+                        ),
+                        onPressed: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Userpage(),));
+                      }, child: Text('OK')),
+                      SizedBox(width: 15,)
+                    ],
+                  ),
+                  // Text(_correctness.toString())
+                ],
+              ),
+            )
+            
           );
         },
       );
@@ -154,6 +204,26 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
     print(firebasedata);
   }
 
+
+// Future<void>d()async{
+//     final CollectionReference usersCollection =
+//           FirebaseFirestore.instance.collection('${topicname}');
+
+//       // Get documents from the collection
+//       final QuerySnapshot snapshot = await usersCollection.get();
+
+//       // Convert documents into a list of maps
+//       final List<Map<String, dynamic>> users = snapshot.docs.map((doc) {
+//         return doc.data() as Map<String, dynamic>;
+//       }).toList();
+
+//       setState(() {
+//         mmmmmmm.addAll(users);
+//       });
+//       print("=======================+++++++++++++++++++++++++++++++++++++++++=============================+++++++++++++++++++++=================");
+//       print(mmmmmmm);
+//       print("=======================+++++++++++++++++++++++++++++++++++++++++=============================+++++++++++++++++++++=================");
+// }
   @override
   void initState() {
     super.initState();
@@ -163,12 +233,14 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
 
     // _selectedAnswers = List<int?>.filled(.length, null); // Initially, no answer is selected
 
-    //   _correctness = List<bool>.filled(_questions.length, false);   // Initially, all answers are marked incorrect
+      _correctness = List<bool>.filled(_questions.length, false);   // Initially, all answers are marked incorrect
   }
 
   @override
   Widget build(BuildContext context) {
     topicname = ModalRoute.of(context)?.settings.arguments as String;
+  //  d();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -250,10 +322,16 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
             Divider(),
             Container(
               height: 600,
+
+
+
+
+
+
               // child: ListView.builder(
-              //   itemCount: _questions.length,
+              //   itemCount: mmmmmmm.length,
               //   itemBuilder: (context, index) {
-              //     final question = _questions[index];
+
               //     return Padding(
               //       padding: const EdgeInsets.all(16.0),
               //       child: Card(
@@ -266,21 +344,22 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
               //             crossAxisAlignment: CrossAxisAlignment.start,
               //             children: [
               //               Text(
-              //                 'Q${index + 1}: ${question['question']}',
+              //                 'Q${index + 1}: ${mmmmmmm[index]['question']}',
               //                 style: TextStyle(
               //                     fontSize: 18, fontWeight: FontWeight.bold),
               //               ),
               //               SizedBox(height: 12),
               //               ...List.generate(
-              //                 question['options'].length,
+              //                 mmmmmmm[index]['options'].length,
               //                 (optionIndex) => ListTile(
-              //                   title: Text(question['options'][optionIndex]),
+              //                   title: Text(mmmmmmm[index]['options'][optionIndex]),
               //                   leading: Radio<int>(
               //                     value: optionIndex,
               //                     groupValue: _selectedAnswers[index],
               //                     onChanged: (value) {
               //                       setState(() {
               //                         _selectedAnswers[index] = value;
+              //                         total = total + 1;
               //                       });
               //                     },
               //                   ),
@@ -293,6 +372,7 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
               //     );
               //   },
               // ),
+              // ==============================================================================================================================
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection('${topicname.toString()}')
@@ -300,41 +380,19 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   print(snapshot.data!.docs.length);
-
                   outoff = snapshot.data!.docs.length;
-
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       final DocumentSnapshot todosnapshot =
                           snapshot.data!.docs[index];
-                      // setState(() {
-                      // outoff=outoff+1;
-                      // });
-                      // print("==============================================================");
-                      // print(todosnapshot['question']);
-
-                      // return ListTile(
-                      //   title: Text(todosnapshot["task"].toString()),
-                      //   trailing: IconButton(onPressed: () {
-                      //     //  deletetodo(todosnapshot.id);
-                      //      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Item Deleted")));
-                      //   }, icon: Icon(Icons.delete_outline)),
-                      //   onTap: () {
-                      //     print(todosnapshot.id);
-                      //     List ls=[todosnapshot.id,
-                      //     todosnapshot["task"].toString()
-                      //     ];
-                      //     Navigator.pushNamed(context, "update",arguments:ls);
-                      //   },
-                      // );
-
-                      return Card(
+                      return Card(margin: EdgeInsets.only(bottom: 20),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                         elevation: 4,
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.only(left: 16,right: 16,top: 16),
+                          
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -356,6 +414,7 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
                                       setState(() {
                                         _selectedAnswers[index] = value;
                                         total = total + 1;
+                                         _correctness[index] = value == int.parse(todosnapshot['answer'])-1;
                                       });
                                     },
                                   ),

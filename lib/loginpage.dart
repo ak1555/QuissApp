@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quissapp/adminpage.dart';
+import 'package:quissapp/mainpage1.dart';
 import 'package:quissapp/signup.dart';
 import 'package:quissapp/userpage.dart';
 
@@ -98,6 +99,7 @@ class _LoginpageState extends State<Loginpage> {
           email: usrname.text.trim(), password: pswd.text.trim());
 
       checkUserRole();
+      // Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(),));
     } catch (e) {
       print(
           "================================================================================error");
@@ -120,54 +122,70 @@ class _LoginpageState extends State<Loginpage> {
               SizedBox(
                 height: 1,
               ),
-              Text("Login",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,letterSpacing: 1.5),),
-
-              Text("Welcome to E-Learning platform",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,letterSpacing: 1),),
-            
+              SizedBox(
+                height: 1,
+              ),
+              Text(
+                "Login",
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5),
+              ),
+              SizedBox(
+                height: 1,
+              ),
+              Text(
+                "Welcome to E-Learning platform",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1),
+              ),
+              SizedBox(
+                height: 1,
+              ),
               SizedBox(
                 height: 15,
               ),
+
               Container(
-                height: 85,
+                height: 60,
                 width: double.infinity,
                 child: Expanded(
                     child: TextField(
                   controller: usrname,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade400)),
-                    fillColor: Colors.white,filled: true,
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade400)),
+                    fillColor: Colors.white,
+                    filled: true,
                     labelText: 'username',
                   ),
                 )),
               ),
+              // SizedBox(height: 15,),
               Container(
-                height: 85,
+                height: 60,
                 width: double.infinity,
-                child:
-                    // Column(
-                    //   children: [
-                    Expanded(
-                        child: TextField(
+                child: Expanded(
+                    child: TextField(
                   controller: pswd,
                   decoration: InputDecoration(
-                    fillColor: Colors.white,filled: true,
-                      border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade400)), labelText: 'password'),
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey.shade400)),
+                      labelText: 'password'),
                 )),
-                // Row(children: [
-                //   CupertinoButton(sizeStyle: CupertinoButtonSize.small,
-                //     child: Text("forgot password",style: TextStyle(fontSize: 14),), onPressed: () {
-
-                //   },)
-                // ],)
-                //   ],
-                // ),
+              ),
+              SizedBox(
+                height: 1,
               ),
               SizedBox(
                 height: 15,
               ),
               CupertinoButton(
-                  // style: TextButton.styleFrom(backgroundColor: Colors.green),
-                  // color: Colors.green,
                   color: Colors.deepPurple.shade300,
                   padding:
                       EdgeInsets.only(left: 75, right: 75, top: 15, bottom: 15),
@@ -177,9 +195,15 @@ class _LoginpageState extends State<Loginpage> {
                   },
                   child: Text(
                     'Login',
-                    style: TextStyle(fontSize: 19,letterSpacing: 1,
-                        fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TextStyle(
+                        fontSize: 19,
+                        letterSpacing: 1,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
                   )),
+              SizedBox(
+                height: 1,
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -188,11 +212,20 @@ class _LoginpageState extends State<Loginpage> {
                   Text("Don't have an account yet?"),
                   CupertinoButton(
                     sizeStyle: CupertinoButtonSize.small,
-                    child: Text('Signup'), onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp(),));
-                  },),
+                    child: Text('Signup'),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUp(),
+                          ));
+                    },
+                  ),
                 ],
-              )
+              ),
+              SizedBox(
+                height: 1,
+              ),
             ],
           ),
         ),
