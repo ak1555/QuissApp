@@ -12,46 +12,51 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-
-   TextEditingController username = TextEditingController();
+  TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController Cpassword = TextEditingController();
 
-
-   Future<void> registerUser() async {
-    if (password.text==Cpassword.text) {
+  Future<void> registerUser() async {
+    if (password.text == Cpassword.text) {
       try {
-      // Create user
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: username.text.trim(),
-        password: password.text.trim(),
-      );
-
-      // Save user data in Firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-        'username': username.text.trim(),
-        'role': "user",
-      });
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Userpage(),));
-    } catch (e) {
-      print(
-          "================================================================================error");
-      print('Error registering user: $e');
-    }
-    } else {
-      showDialog(context: context, builder: (context) {
-      return  AlertDialog(
-          title: Text('missmatch password'),
+        // Create user
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: username.text.trim(),
+          password: password.text.trim(),
         );
-      },);
+
+        // Save user data in Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'username': username.text.trim(),
+          'role': "user",
+        });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Userpage(),
+            ));
+      } catch (e) {
+        print(
+            "================================================================================error");
+        print('Error registering user: $e');
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('missmatch password'),
+          );
+        },
+      );
     }
   }
+
   @override
- 
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -76,11 +81,12 @@ class _SignUpState extends State<SignUp> {
                 height: 85,
                 width: double.infinity,
                 child: Expanded(
-                    // sudo apt install nodejs sudo
                     child: TextField(
                   controller: username,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                       labelText: 'Username',
                       suffixIcon: Icon(Icons.person)),
                 )),
@@ -88,37 +94,27 @@ class _SignUpState extends State<SignUp> {
               Container(
                 height: 85,
                 width: double.infinity,
-                child:
-                    // Column(
-                    //   children: [
-                    Expanded(
-                        child: TextField(
+                child: Expanded(
+                    child: TextField(
                   controller: password,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                       labelText: 'Password',
                       suffixIcon: Icon(Icons.remove_red_eye)),
                 )),
-                // Row(children: [
-                //   CupertinoButton(sizeStyle: CupertinoButtonSize.small,
-                //     child: Text("forgot password",style: TextStyle(fontSize: 14),), onPressed: () {
-
-                //   },)
-                // ],)
-                //   ],
-                // ),
               ),
               Container(
                 height: 85,
                 width: double.infinity,
-                child:
-                    // Column(
-                    //   children: [
-                    Expanded(
-                        child: TextField(
+                child: Expanded(
+                    child: TextField(
                   controller: Cpassword,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                       labelText: 'Conform-password',
                       suffixIcon: Icon(Icons.remove_red_eye)),
                 )),
@@ -127,11 +123,7 @@ class _SignUpState extends State<SignUp> {
                 height: 15,
               ),
               CupertinoButton(
-                  // style: TextButton.styleFrom(backgroundColor: Colors.green),
-                  // color: Colors.green,
                   color: Colors.deepPurple.shade300,
-                  // padding:
-                      // EdgeInsets.only(left: 75, right: 75, top: 15, bottom: 15),
                   onPressed: () {
                     registerUser();
                   },
@@ -143,9 +135,7 @@ class _SignUpState extends State<SignUp> {
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   )),
-              SizedBox(
-                height: 15,
-              ),
+              Text("terms and privacy")
             ],
           ),
         ),

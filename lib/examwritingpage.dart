@@ -52,15 +52,16 @@ class _ExamWritingPageState extends State<ExamWritingPage> {
     29,
     30
   ];
-  List mmmmmmm=[];
+  List mmmmmmm = [];
 
   // State to store selected answers and their correctness
   List _selectedAnswers = [];
-List _correctness=[];
+  List _correctness = [];
   void fetchDataFromFirestore() async {
     List<Map<String, dynamic>> firebasedata = [];
 
-    print(" ===================================================================================================== fetchdatafrom firebase");
+    print(
+        " ===================================================================================================== fetchdatafrom firebase");
     print(_correctness);
     try {
       // Reference to the Firestore collection
@@ -79,116 +80,133 @@ List _correctness=[];
         firebasedata.addAll(users);
       });
 // =====================================================================================================
-//       List li = [];
-//       List lii = [];
+      List li = [];
+      List lii = [];
 //       List<int> ls = [];
-//       for (var i = 0; i < firebasedata.length; i++) {
-//         li.add(firebasedata[i]['answer']);
-//       }
-//       for (var i = li.length - 1; i >= 0; i--) {
-//         lii.add(int.parse(li[i]));
-//       }
-//       for (var i = 0; i < lii.length; i++) {
-//         lii[i] = lii[i] - 1;
-//       }
+      for (var i = 0; i < firebasedata.length; i++) {
+        li.add(firebasedata[i]['answer']);
+      }
+
+      for (var i = li.length - 1; i >= 0; i--) {
+        lii.add(int.parse(li[i]));
+      }
+      for (var i = 0; i < lii.length; i++) {
+        lii[i] = lii[i];
+        print(
+            "===================================================================== Exam result");
+
+        print(lii);
+        print(li);
+        print(
+            "===================================================================== Exam result");
+      }
 
 //       print(li);
 //       print(lii);
 //       print(_selectedAnswers);
 //       print(
 //           "===================================================================== Exam result");
-// // for (var i = 0; i < li.length; i++) {
-// //   ls.add(int.parse(_selectedAnswers[]))
-// // }
+// for (var i = 0; i < li.length; i++) {
+//   ls.add(int.parse(_selectedAnswers[]))
+// }
 
-//       for (var i = 0; i < li.length; i++) {
-//         print("loop one add");
-//         if (lii[i] == _selectedAnswers[i]) {
-//           setState(() {
-//             totalmark = totalmark + 1;
-//             print("plus one");
-//           });
-//         }
-//       }
-for (var i = 0; i < _correctness.length; i++) {
-  if (_correctness[i]=true) {
-    totalmark=totalmark+1;
-  }
-}
+      // for (var i = 0; i < li.length; i++) {
+      //   print("loop one add");
+      //   if (lii[i] == _selectedAnswers[i]) {
+      //     setState(() {
+      //       totalmark = totalmark + 1;
+      //       print("plus one");
+      //       print(lii[i]);
+      //       print(_selectedAnswers[i]);
+      //       print("plus one");
+      //     });
+      //   }
+      // }
+      for (var i = 0; i < _correctness.length; i++) {
+        if (_correctness[i] == true) {
+          totalmark = totalmark + 1;
+        }
+      }
       print(
           "===================================================================== Exam result");
       final l = FirebaseAuth.instance.currentUser!.email;
 
-  if (_selectedAnswers[0]!=null) {
-    //  print("NNNNNNNNNNNNOOOOOOOOOOOTTTTTTTTTeeeeeeeeeeemmmmmmmmmppppppppppppptttttttttyyyyyyyyyy");
-    
-
-
-
-
+      if (_selectedAnswers[0] != null) {
+        //  print("NNNNNNNNNNNNOOOOOOOOOOOTTTTTTTTTeeeeeeeeeeemmmmmmmmmppppppppppppptttttttttyyyyyyyyyy");
 
         await FirebaseFirestore.instance.collection('result').add({
-        "username": l,
-        "totalmark": totalmark,
-        "usersAnswers": _correctness,
-        "correctAnswer": _selectedAnswers
-      });
-
-
-
-
-
-
-
-
-
-
-
-
-  }else{
-    print("eeeeeeeeeeeeeeeeeeeeeemmmmmmmmmmmmmmmmmmmmmmmmppppppppppppppppppppppppttttttttttttttttttttttyyyyyyyyyyyyyyyyyyy");
-  }
+          "username": l,
+          "topic": topicname,
+          "totalmark": totalmark,
+          "usersAnswers": _correctness,
+          "outoff": outoff,
+          "correctAnswer": _selectedAnswers
+        });
+      } else {
+        print(
+            "eeeeeeeeeeeeeeeeeeeeeemmmmmmmmmmmmmmmmmmmmmmmmppppppppppppppppppppppppttttttttttttttttttttttyyyyyyyyyyyyyyyyyyy");
+      }
       print(
           "===================================================================== Exam result");
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            shadowColor:totalmark>=outoff/2? Colors.green:Colors.red ,
-            // title:totalmark>=outoff/2? Text('you Won!'):Text('you Got!'),
-            title: Container(
-              height: 250,
-              width: 250,
-             decoration: BoxDecoration(
-               color: totalmark>=outoff/2? Colors.green:Colors.red,
-               borderRadius: BorderRadius.circular(10)
-             ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                    totalmark>=outoff/2? Text("Congrats...",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)):Text("Oops!",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                  totalmark>=outoff/2? Text("you won"):Text("you only got!"),
-                  totalmark>=outoff/2? Text("Mark: ${totalmark}/${outoff}",style: TextStyle(fontSize: 15)):Text("Mark: ${totalmark}/${outoff}",style: TextStyle(fontSize: 15)),
-                  
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: totalmark>=outoff/2? Colors.grey:Colors.grey,
-                        ),
-                        onPressed: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Userpage(),));
-                      }, child: Text('OK')),
-                      SizedBox(width: 15,)
-                    ],
-                  ),
-                  // Text(_correctness.toString())
-                ],
-              ),
-            )
-            
-          );
+              shadowColor: totalmark >= outoff / 2 ? Colors.green : Colors.red,
+              // title:totalmark>=outoff/2? Text('you Won!'):Text('you Got!'),
+              title: Container(
+                height: 250,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: totalmark >= outoff / 2 ? Colors.green : Colors.red,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    totalmark >= outoff / 2
+                        ? Text("Congrats...",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold))
+                        : Text(
+                            "Oops!",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                    totalmark >= outoff / 2
+                        ? Text("you won")
+                        : Text("you only got!"),
+                    totalmark >= outoff / 2
+                        ? Text("Mark: ${totalmark}/${outoff}",
+                            style: TextStyle(fontSize: 15))
+                        : Text("Mark: ${totalmark}/${outoff}",
+                            style: TextStyle(fontSize: 15)),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: totalmark >= outoff / 2
+                                  ? Colors.grey
+                                  : Colors.grey,
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Userpage(),
+                                  ));
+                            },
+                            child: Text('OK')),
+                        SizedBox(
+                          width: 15,
+                        )
+                      ],
+                    ),
+                    // Text(_correctness.toString())
+                  ],
+                ),
+              ));
         },
       );
 
@@ -199,31 +217,8 @@ for (var i = 0; i < _correctness.length; i++) {
           '::::::::::::::::::::::::::::Error in catch::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
       print(e);
     }
-    print(
-        '::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
-    print(firebasedata);
   }
 
-
-// Future<void>d()async{
-//     final CollectionReference usersCollection =
-//           FirebaseFirestore.instance.collection('${topicname}');
-
-//       // Get documents from the collection
-//       final QuerySnapshot snapshot = await usersCollection.get();
-
-//       // Convert documents into a list of maps
-//       final List<Map<String, dynamic>> users = snapshot.docs.map((doc) {
-//         return doc.data() as Map<String, dynamic>;
-//       }).toList();
-
-//       setState(() {
-//         mmmmmmm.addAll(users);
-//       });
-//       print("=======================+++++++++++++++++++++++++++++++++++++++++=============================+++++++++++++++++++++=================");
-//       print(mmmmmmm);
-//       print("=======================+++++++++++++++++++++++++++++++++++++++++=============================+++++++++++++++++++++=================");
-// }
   @override
   void initState() {
     super.initState();
@@ -233,13 +228,14 @@ for (var i = 0; i < _correctness.length; i++) {
 
     // _selectedAnswers = List<int?>.filled(.length, null); // Initially, no answer is selected
 
-      _correctness = List<bool>.filled(_questions.length, false);   // Initially, all answers are marked incorrect
+    _correctness = List<bool>.filled(_questions.length,
+        false); // Initially, all answers are marked incorrect
   }
 
   @override
   Widget build(BuildContext context) {
     topicname = ModalRoute.of(context)?.settings.arguments as String;
-  //  d();
+    //  d();
 
     return Scaffold(
       appBar: AppBar(
@@ -290,19 +286,6 @@ for (var i = 0; i < _correctness.length; i++) {
                             shadowColor: Colors.transparent),
                         onPressed: () async {
                           fetchDataFromFirestore();
-                          print(_selectedAnswers);
-
-                          // final currentuser =
-                          //     await FirebaseAuth.instance.currentUser;
-                          // DocumentSnapshot userDoc = await FirebaseFirestore
-                          //     .instance
-                          //     .collection('users')
-                          //     .doc(currentuser!.uid)
-                          //     .get();
-
-                          // print(userDoc.get('username'));
-
-                          // final name = userDoc.get('username');
                         },
                         child: Text(
                           'SUBMIT',
@@ -322,57 +305,6 @@ for (var i = 0; i < _correctness.length; i++) {
             Divider(),
             Container(
               height: 600,
-
-
-
-
-
-
-              // child: ListView.builder(
-              //   itemCount: mmmmmmm.length,
-              //   itemBuilder: (context, index) {
-
-              //     return Padding(
-              //       padding: const EdgeInsets.all(16.0),
-              //       child: Card(
-              //         shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(12)),
-              //         elevation: 4,
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(16.0),
-              //           child: Column(
-              //             crossAxisAlignment: CrossAxisAlignment.start,
-              //             children: [
-              //               Text(
-              //                 'Q${index + 1}: ${mmmmmmm[index]['question']}',
-              //                 style: TextStyle(
-              //                     fontSize: 18, fontWeight: FontWeight.bold),
-              //               ),
-              //               SizedBox(height: 12),
-              //               ...List.generate(
-              //                 mmmmmmm[index]['options'].length,
-              //                 (optionIndex) => ListTile(
-              //                   title: Text(mmmmmmm[index]['options'][optionIndex]),
-              //                   leading: Radio<int>(
-              //                     value: optionIndex,
-              //                     groupValue: _selectedAnswers[index],
-              //                     onChanged: (value) {
-              //                       setState(() {
-              //                         _selectedAnswers[index] = value;
-              //                         total = total + 1;
-              //                       });
-              //                     },
-              //                   ),
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
-              // ==============================================================================================================================
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection('${topicname.toString()}')
@@ -386,13 +318,14 @@ for (var i = 0; i < _correctness.length; i++) {
                     itemBuilder: (context, index) {
                       final DocumentSnapshot todosnapshot =
                           snapshot.data!.docs[index];
-                      return Card(margin: EdgeInsets.only(bottom: 20),
+                      return Card(
+                        margin: EdgeInsets.only(bottom: 20),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                         elevation: 4,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16,right: 16,top: 16),
-                          
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -414,7 +347,9 @@ for (var i = 0; i < _correctness.length; i++) {
                                       setState(() {
                                         _selectedAnswers[index] = value;
                                         total = total + 1;
-                                         _correctness[index] = value == int.parse(todosnapshot['answer'])-1;
+                                        _correctness[index] = value ==
+                                            int.parse(todosnapshot['answer']) -
+                                                1;
                                       });
                                     },
                                   ),

@@ -10,32 +10,30 @@ class AdminAddItems extends StatefulWidget {
 }
 
 class _AdminAddItemsState extends State<AdminAddItems> {
-    TextEditingController Question = TextEditingController();
+  TextEditingController Question = TextEditingController();
   TextEditingController Option1 = TextEditingController();
   TextEditingController option2 = TextEditingController();
   TextEditingController option3 = TextEditingController();
   TextEditingController option4 = TextEditingController();
   TextEditingController answer = TextEditingController();
-   String? languagename;
-   void toadd() async{
+  String? languagename;
+  void toadd() async {
+    List li = [Option1.text, option2.text, option3.text, option4.text];
 
-     List li = [Option1.text, option2.text, option3.text, option4.text];
-
-    await FirebaseFirestore.instance.collection('${languagename}').add({
-       "question": Question.text,
-      "options": li,
-      "answer":answer.text
-    });
+    await FirebaseFirestore.instance
+        .collection('${languagename}')
+        .add({"question": Question.text, "options": li, "answer": answer.text});
     Question.clear();
     Option1.clear();
     option2.clear();
     option3.clear();
     option4.clear();
     answer.clear();
-   }
+  }
+
   @override
   Widget build(BuildContext context) {
-    languagename= ModalRoute.of(context)?.settings.arguments as String;
+    languagename = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -83,7 +81,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                     width: double.infinity,
                     child: Expanded(
                         child: TextField(
-                          controller: Question,
+                      controller: Question,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(borderSide: BorderSide()),
                           labelText: "Question"),
@@ -97,7 +95,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                         Container(
                           child: Expanded(
                               child: TextField(
-                                   controller: Option1,
+                            controller: Option1,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: "option1"),
@@ -109,7 +107,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                         Container(
                           child: Expanded(
                               child: TextField(
-                                   controller: option2,
+                            controller: option2,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: "option2"),
@@ -126,7 +124,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                         Container(
                           child: Expanded(
                               child: TextField(
-                                  controller: option3,
+                            controller: option3,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: "option3"),
@@ -138,7 +136,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                         Container(
                           child: Expanded(
                               child: TextField(
-                                  controller: option4,
+                            controller: option4,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: "option4"),
@@ -147,7 +145,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                       ],
                     ),
                   ),
-                   Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
@@ -155,7 +153,7 @@ class _AdminAddItemsState extends State<AdminAddItems> {
                         height: 40,
                         child: Expanded(
                             child: TextField(
-                               controller: answer,
+                          controller: answer,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: "Correct option"),
@@ -192,204 +190,142 @@ class _AdminAddItemsState extends State<AdminAddItems> {
             SizedBox(
               height: 10,
             ),
-            
-                     Container(
-                      height: 490,
-                      width: double.infinity,
-                       child: StreamBuilder(
-                                 stream: FirebaseFirestore.instance.collection('${languagename.toString()}').orderBy("question").snapshots(),
-                                 builder: (context, snapshot) {
-                                   print(snapshot.data!.docs.length);
-                                   return ListView.builder(
-                                     itemCount: snapshot.data!.docs.length,
-                                     itemBuilder: (context, index) {
-                                       final DocumentSnapshot todosnapshot =
-                                           snapshot.data!.docs[index];
-                       
-                                       return   Column(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       Text(
-                                         "${index+1}). ${todosnapshot['question'].toString()}",
-                                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                                       ),
-                                       SizedBox(
-                                         height: 5,
-                                       ),
-                                       Container(
-                                           height: 100,
-                                           width: double.infinity,
-                                           child: Row(
+            Container(
+              height: 490,
+              width: double.infinity,
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('${languagename.toString()}')
+                    .orderBy("question")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  print(snapshot.data!.docs.length);
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final DocumentSnapshot todosnapshot =
+                          snapshot.data!.docs[index];
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Container(
-                              height: double.infinity,
-                              width: 150,
-                              child: Column(
+                          Text(
+                            "${index + 1}). ${todosnapshot['question'].toString()}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                              height: 100,
+                              width: double.infinity,
+                              child: Row(
                                 children: [
                                   Expanded(
-                                      child: Container(
-                                    width: double.infinity,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey)),
-                                    child: Text( todosnapshot["options"][0].toString(),),
-                                  )),
+                                    child: Container(
+                                      height: double.infinity,
+                                      width: 150,
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                              child: Container(
+                                            width: double.infinity,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey)),
+                                            child: Text(
+                                              todosnapshot["options"][0]
+                                                  .toString(),
+                                            ),
+                                          )),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Expanded(
+                                              child: Container(
+                                            width: double.infinity,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey)),
+                                            child: Text(
+                                              todosnapshot["options"][1]
+                                                  .toString(),
+                                            ),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                   SizedBox(
-                                    height: 5,
+                                    width: 5,
                                   ),
                                   Expanded(
-                                      child: Container(
-                                    width: double.infinity,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey)),
-                                    child: Text( todosnapshot["options"][1].toString(),),
-                                  ))
+                                    child: Container(
+                                      height: double.infinity,
+                                      width: 150,
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                              child: Container(
+                                            width: double.infinity,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey)),
+                                            child: Text(
+                                              todosnapshot["options"][2]
+                                                  .toString(),
+                                            ),
+                                          )),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Expanded(
+                                              child: Container(
+                                            width: double.infinity,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey)),
+                                            child: Text(
+                                              todosnapshot["options"][3]
+                                                  .toString(),
+                                            ),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                  )
                                 ],
-                              ),
+                              )),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Container(
+                            height: 40,
+                            width: 93,
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(left: 5),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.green),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Text(
+                              'Answer: ${todosnapshot["answer"].toString()}',
                             ),
                           ),
                           SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: double.infinity,
-                              width: 150,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                      child: Container(
-                                    width: double.infinity,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey)),
-                                    child: Text( todosnapshot["options"][2].toString(),),
-                                  )),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Expanded(
-                                      child: Container(
-                                    width: double.infinity,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey)),
-                                    child: Text( todosnapshot["options"][3].toString(),),
-                                  ))
-                                ],
-                              ),
-                            ),
+                            height: 20,
                           )
                         ],
-                                           )),
-                                           SizedBox(height: 4,),
-                                           Container(
-                                            height: 40,
-                                    width: 93,
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(left: 5),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.green),borderRadius: BorderRadius.circular(5)),
-                                    child: Text('Answer: ${ todosnapshot["answer"].toString()}',),
-                                  ),
-                                  SizedBox(height: 20,)
-                                     ],
-
-                                   );
-                                     },
-                                   );
-                                 },
-                             ),
-                     ),
-              
-
-
-
-
-
-
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     Text(
-            //       "2). who developed flutter?",
-            //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            //     ),
-            //     SizedBox(
-            //       height: 5,
-            //     ),
-            //     Container(
-            //         height: 100,
-            //         width: double.infinity,
-            //         child: Row(
-            //           children: [
-            //             Expanded(
-            //               child: Container(
-            //                 height: double.infinity,
-            //                 width: 150,
-            //                 child: Column(
-            //                   children: [
-            //                     Expanded(
-            //                         child: Container(
-            //                       width: double.infinity,
-            //                       alignment: Alignment.center,
-            //                       decoration: BoxDecoration(
-            //                           border: Border.all(color: Colors.grey)),
-            //                       child: Text('Facebook'),
-            //                     )),
-            //                     SizedBox(
-            //                       height: 5,
-            //                     ),
-            //                     Expanded(
-            //                         child: Container(
-            //                       width: double.infinity,
-            //                       alignment: Alignment.center,
-            //                       decoration: BoxDecoration(
-            //                           border: Border.all(color: Colors.grey)),
-            //                       child: Text('Google'),
-            //                     ))
-            //                   ],
-            //                 ),
-            //               ),
-            //             ),
-            //             SizedBox(
-            //               width: 5,
-            //             ),
-            //             Expanded(
-            //               child: Container(
-            //                 height: double.infinity,
-            //                 width: 150,
-            //                 child: Column(
-            //                   children: [
-            //                     Expanded(
-            //                         child: Container(
-            //                       width: double.infinity,
-            //                       alignment: Alignment.center,
-            //                       decoration: BoxDecoration(
-            //                           border: Border.all(color: Colors.grey)),
-            //                       child: Text('Youtube'),
-            //                     )),
-            //                     SizedBox(
-            //                       height: 5,
-            //                     ),
-            //                     Expanded(
-            //                         child: Container(
-            //                       width: double.infinity,
-            //                       alignment: Alignment.center,
-            //                       decoration: BoxDecoration(
-            //                           border: Border.all(color: Colors.grey)),
-            //                       child: Text('Amazon'),
-            //                     ))
-            //                   ],
-            //                 ),
-            //               ),
-            //             )
-            //           ],
-            //         )),
-            //   ],
-            // )
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

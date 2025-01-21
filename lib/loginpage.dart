@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quissapp/adminpage.dart';
-import 'package:quissapp/mainpage1.dart';
 import 'package:quissapp/signup.dart';
 import 'package:quissapp/userpage.dart';
 
@@ -157,6 +155,7 @@ class _LoginpageState extends State<Loginpage> {
                   controller: usrname,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(100),
                         borderSide: BorderSide(color: Colors.grey.shade400)),
                     fillColor: Colors.white,
                     filled: true,
@@ -175,6 +174,7 @@ class _LoginpageState extends State<Loginpage> {
                       fillColor: Colors.white,
                       filled: true,
                       border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100),
                           borderSide: BorderSide(color: Colors.grey.shade400)),
                       labelText: 'password'),
                 )),

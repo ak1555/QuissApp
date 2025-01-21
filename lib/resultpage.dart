@@ -29,7 +29,7 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
             Container(
-              height: 550,
+              height: 610,
               width: double.infinity,
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -52,15 +52,18 @@ class _ResultPageState extends State<ResultPage> {
                               child: Text(
                                 '${index + 1}) ',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                                    fontWeight: FontWeight.w400, fontSize: 20),
                               )),
                           Expanded(
                             child: Container(
                               height: 70,
-                              // width: double.infinity,
                               margin: EdgeInsets.only(top: 15),
                               decoration: BoxDecoration(
-                                border: Border.all(),
+                                border: Border.all(
+                                    color: todosnapshot["totalmark"] >=
+                                            todosnapshot["outoff"] / 2
+                                        ? Colors.green
+                                        : Colors.red),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               alignment: Alignment.center,
@@ -70,18 +73,37 @@ class _ResultPageState extends State<ResultPage> {
                                     todosnapshot['username'].toString(),
                                     style: TextStyle(
                                         fontSize: 18,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.w500,
                                         color: Colors.black,
                                         letterSpacing: 1),
                                   ),
-                                  Text(
-                                    todosnapshot["usersAnswers"].toString(),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                    ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        todosnapshot["topic"].toString(),
+                                        style: TextStyle(
+                                            color: Colors.blue.shade900),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        "score: ${todosnapshot["totalmark"].toString()}/${todosnapshot["outoff"].toString()}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

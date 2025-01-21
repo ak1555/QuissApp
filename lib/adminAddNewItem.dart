@@ -10,7 +10,6 @@ class AdminAddNewItem extends StatefulWidget {
 }
 
 class _AdminAddNewItemState extends State<AdminAddNewItem> {
-  @override
   TextEditingController NewTopic = TextEditingController();
   TextEditingController Question = TextEditingController();
   TextEditingController Option1 = TextEditingController();
@@ -18,30 +17,21 @@ class _AdminAddNewItemState extends State<AdminAddNewItem> {
   TextEditingController option3 = TextEditingController();
   TextEditingController option4 = TextEditingController();
   TextEditingController answer = TextEditingController();
-  List ls = [{ "question":"fontWeight","options":["one","two","tghree","four"],"answer":"1"}];
+  List ls = [];
   Map mp = {};
 
-  void addtoList()async {
+  void addtoList() async {
     List li = [Option1.text, option2.text, option3.text, option4.text];
-    mp = {
-      "question": Question.text,
-      "options": li,
-      "answer":answer.text
-    };
+    mp = {"question": Question.text, "options": li, "answer": answer.text};
     setState(() {
       ls.add(mp);
     });
-     try {
-    await FirebaseFirestore.instance.collection('${NewTopic.text}').add(
-      {
-      "question": Question.text,
-      "options": li,
-      "answer":answer.text
+    try {
+      await FirebaseFirestore.instance.collection('${NewTopic.text}').add(
+          {"question": Question.text, "options": li, "answer": answer.text});
+    } catch (e) {
+      print(e);
     }
-    );
-  } catch (e) {
-    print(e);
-  }
     Question.clear();
     Option1.clear();
     option2.clear();
@@ -50,22 +40,7 @@ class _AdminAddNewItemState extends State<AdminAddNewItem> {
     answer.clear();
   }
 
-//  void saveupdates()async{
-// if (ls.isNotEmpty) {
-//   try {
-//     await FirebaseFirestore.instance.collection('${NewTopic.text}').add(
-
-//     )
-//   } catch (e) {
-//     print(e);
-//   }
-// } else {
-//   print("ls is empty");
-// }
-//   }
-void getdatas()async{
-
-}
+  void getdatas() async {}
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,26 +62,34 @@ void getdatas()async{
                 ),
                 CupertinoButton(
                   child: Text('Save Updates'),
-                  onPressed: () async{
+                  onPressed: () async {
                     // saveupdates();
-if (NewTopic.text!='') {
-  try {
-  await FirebaseFirestore.instance.collection('topics').add({"language":NewTopic.text});
-  Navigator.pop(context);
-} catch (e) {
-  print(e);
-}
-
-} else {
-  showDialog(context: context, builder: (context) {
-    return AlertDialog(
-      content: Text("you must enter a topic"),
-actions: [TextButton(onPressed: () {
-  Navigator.pop(context);
-}, child: Text("ok"))],
-    );
-  },);
-}
+                    if (NewTopic.text != '') {
+                      try {
+                        await FirebaseFirestore.instance
+                            .collection('topics')
+                            .add({"language": NewTopic.text});
+                        Navigator.pop(context);
+                      } catch (e) {
+                        print(e);
+                      }
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text("you must enter a topic"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("ok"))
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                 )
               ],
@@ -117,13 +100,12 @@ actions: [TextButton(onPressed: () {
               width: double.infinity,
               padding: EdgeInsets.only(left: 5, right: 5),
               decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: Colors.grey.shade800),
+                  border: Border.all(width: 2, color: Colors.grey.shade700),
                   borderRadius: BorderRadius.circular(5)),
               child: Expanded(
                   child: TextField(
-                    controller: NewTopic,
+                controller: NewTopic,
                 decoration: InputDecoration(
-                    // border: OutlineInputBorder(  borderSide: BorderSide(style: BorderStyle.solid,color: Colors.black,width: 2,strokeAlign: 2)),
                     border: InputBorder.none,
                     labelText: "Enter New Topic Name"),
               )),
@@ -141,7 +123,6 @@ actions: [TextButton(onPressed: () {
               padding: EdgeInsets.only(left: 1.5, right: 1.5),
               decoration: BoxDecoration(
                   border: Border.all(
-                      // color: Colors.purple.shade600,width: 2
                       )),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -152,7 +133,7 @@ actions: [TextButton(onPressed: () {
                     width: double.infinity,
                     child: Expanded(
                         child: TextField(
-                          controller: Question,
+                      controller: Question,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(borderSide: BorderSide()),
                           labelText: "Question"),
@@ -166,7 +147,7 @@ actions: [TextButton(onPressed: () {
                         Container(
                           child: Expanded(
                               child: TextField(
-                                controller: Option1,
+                            controller: Option1,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: "option1"),
@@ -178,7 +159,7 @@ actions: [TextButton(onPressed: () {
                         Container(
                           child: Expanded(
                               child: TextField(
-                                 controller: option2,
+                            controller: option2,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: "option2"),
@@ -195,7 +176,7 @@ actions: [TextButton(onPressed: () {
                         Container(
                           child: Expanded(
                               child: TextField(
-                                 controller: option3,
+                            controller: option3,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: "option3"),
@@ -207,7 +188,7 @@ actions: [TextButton(onPressed: () {
                         Container(
                           child: Expanded(
                               child: TextField(
-                                 controller: option4,
+                            controller: option4,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: "option4"),
@@ -224,7 +205,7 @@ actions: [TextButton(onPressed: () {
                         height: 40,
                         child: Expanded(
                             child: TextField(
-                               controller: answer,
+                          controller: answer,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: "Correct option"),
@@ -261,201 +242,225 @@ actions: [TextButton(onPressed: () {
             SizedBox(
               height: 10,
             ),
-        //  =================================
-        Container(
-          height: 550,
-          width: double.infinity,
+            //  =================================
+            Container(
+                height: 550,
+                width: double.infinity,
+                child: NewTopic.text.isNotEmpty
+                    ? StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('${NewTopic.text}')
+                            .orderBy("question")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          print(snapshot.data!.docs.length);
+                          return ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot todosnapshot =
+                                  snapshot.data!.docs[index];
 
-child:NewTopic.text.isNotEmpty?  StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('${NewTopic.text}').orderBy("question").snapshots(),
-          builder: (context, snapshot) {
-            print(snapshot.data!.docs.length);
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot todosnapshot =
-                    snapshot.data!.docs[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    // "2). who developed flutter?",
+                                    "${index + 1}). ${todosnapshot["question"].toString()}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                      height: 100,
+                                      width: double.infinity,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              height: double.infinity,
+                                              width: 150,
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                      child: Container(
+                                                    width: double.infinity,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Text(
+                                                      todosnapshot["options"][0]
+                                                          .toString(),
+                                                    ),
+                                                  )),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Expanded(
+                                                      child: Container(
+                                                    width: double.infinity,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Text(
+                                                        todosnapshot["options"]
+                                                                [1]
+                                                            .toString()),
+                                                  ))
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              height: double.infinity,
+                                              width: 150,
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                      child: Container(
+                                                    width: double.infinity,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Text(
+                                                        todosnapshot["options"]
+                                                                [2]
+                                                            .toString()),
+                                                  )),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Expanded(
+                                                      child: Container(
+                                                    width: double.infinity,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Text(
+                                                        todosnapshot["options"]
+                                                                [3]
+                                                            .toString()),
+                                                  ))
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      )
+                    : SizedBox(
+                        height: 1,
+                      )
 
-                return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  // "2). who developed flutter?",
-                  "${index+1}). ${todosnapshot["question"].toString()}",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                // child: ListView.builder(
+                //   itemCount: ls.length,
+                //   itemBuilder: (context, index) {
+                //   return Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text(
+                //         // "2). who developed flutter?",
+                //         "${index+1}). ${ls[index]["question"].toString()}",
+                //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                //       ),
+                //       SizedBox(
+                //         height: 5,
+                //       ),
+                //       Container(
+                //           height: 100,
+                //           width: double.infinity,
+                //           child: Row(
+                //             children: [
+                //               Expanded(
+                //                 child: Container(
+                //                   height: double.infinity,
+                //                   width: 150,
+                //                   child: Column(
+                //                     children: [
+                //                       Expanded(
+                //                           child: Container(
+                //                         width: double.infinity,
+                //                         alignment: Alignment.center,
+                //                         decoration: BoxDecoration(
+                //                             border: Border.all(color: Colors.grey)),
+                //                         child: Text( ls[index]["options"][0].toString(),),
+                //                       )),
+                //                       SizedBox(
+                //                         height: 5,
+                //                       ),
+                //                       Expanded(
+                //                           child: Container(
+                //                         width: double.infinity,
+                //                         alignment: Alignment.center,
+                //                         decoration: BoxDecoration(
+                //                             border: Border.all(color: Colors.grey)),
+                //                         child: Text(ls[index]["options"][1].toString()),
+                //                       ))
+                //                     ],
+                //                   ),
+                //                 ),
+                //               ),
+                //               SizedBox(
+                //                 width: 5,
+                //               ),
+                //               Expanded(
+                //                 child: Container(
+                //                   height: double.infinity,
+                //                   width: 150,
+                //                   child: Column(
+                //                     children: [
+                //                       Expanded(
+                //                           child: Container(
+                //                         width: double.infinity,
+                //                         alignment: Alignment.center,
+                //                         decoration: BoxDecoration(
+                //                             border: Border.all(color: Colors.grey)),
+                //                         child: Text(ls[index]["options"][2].toString()),
+                //                       )),
+                //                       SizedBox(
+                //                         height: 5,
+                //                       ),
+                //                       Expanded(
+                //                           child: Container(
+                //                         width: double.infinity,
+                //                         alignment: Alignment.center,
+                //                         decoration: BoxDecoration(
+                //                             border: Border.all(color: Colors.grey)),
+                //                         child: Text(ls[index]["options"][3].toString()),
+                //                       ))
+                //                     ],
+                //                   ),
+                //                 ),
+                //               )
+                //             ],
+                //           )),
+                //     ],
+                //   );
+                // },),
                 ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                    height: 100,
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            height: double.infinity,
-                            width: 150,
-                            child: Column(
-                              children: [
-                                Expanded(
-                                    child: Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey)),
-                                  child: Text( todosnapshot["options"][0].toString(),),
-                                )),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Expanded(
-                                    child: Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey)),
-                                  child: Text(todosnapshot["options"][1].toString()),
-                                ))
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: double.infinity,
-                            width: 150,
-                            child: Column(
-                              children: [
-                                Expanded(
-                                    child: Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey)),
-                                  child: Text(todosnapshot["options"][2].toString()),
-                                )),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Expanded(
-                                    child: Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey)),
-                                  child: Text(todosnapshot["options"][3].toString()),
-                                ))
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    )),
-              ],
-            );
-
-
-
-              },
-            );
-          },
-      ):SizedBox(height: 1,)
-
-          // child: ListView.builder(
-          //   itemCount: ls.length,
-          //   itemBuilder: (context, index) {
-          //   return Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Text(
-          //         // "2). who developed flutter?",
-          //         "${index+1}). ${ls[index]["question"].toString()}",
-          //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-          //       ),
-          //       SizedBox(
-          //         height: 5,
-          //       ),
-          //       Container(
-          //           height: 100,
-          //           width: double.infinity,
-          //           child: Row(
-          //             children: [
-          //               Expanded(
-          //                 child: Container(
-          //                   height: double.infinity,
-          //                   width: 150,
-          //                   child: Column(
-          //                     children: [
-          //                       Expanded(
-          //                           child: Container(
-          //                         width: double.infinity,
-          //                         alignment: Alignment.center,
-          //                         decoration: BoxDecoration(
-          //                             border: Border.all(color: Colors.grey)),
-          //                         child: Text( ls[index]["options"][0].toString(),),
-          //                       )),
-          //                       SizedBox(
-          //                         height: 5,
-          //                       ),
-          //                       Expanded(
-          //                           child: Container(
-          //                         width: double.infinity,
-          //                         alignment: Alignment.center,
-          //                         decoration: BoxDecoration(
-          //                             border: Border.all(color: Colors.grey)),
-          //                         child: Text(ls[index]["options"][1].toString()),
-          //                       ))
-          //                     ],
-          //                   ),
-          //                 ),
-          //               ),
-          //               SizedBox(
-          //                 width: 5,
-          //               ),
-          //               Expanded(
-          //                 child: Container(
-          //                   height: double.infinity,
-          //                   width: 150,
-          //                   child: Column(
-          //                     children: [
-          //                       Expanded(
-          //                           child: Container(
-          //                         width: double.infinity,
-          //                         alignment: Alignment.center,
-          //                         decoration: BoxDecoration(
-          //                             border: Border.all(color: Colors.grey)),
-          //                         child: Text(ls[index]["options"][2].toString()),
-          //                       )),
-          //                       SizedBox(
-          //                         height: 5,
-          //                       ),
-          //                       Expanded(
-          //                           child: Container(
-          //                         width: double.infinity,
-          //                         alignment: Alignment.center,
-          //                         decoration: BoxDecoration(
-          //                             border: Border.all(color: Colors.grey)),
-          //                         child: Text(ls[index]["options"][3].toString()),
-          //                       ))
-          //                     ],
-          //                   ),
-          //                 ),
-          //               )
-          //             ],
-          //           )),
-          //     ],
-          //   );
-          // },),
-        ),
-        //  =================================
+            //  =================================
             // SizedBox(
             //   height: 30,
             // ),
-            
           ],
         ),
       ),

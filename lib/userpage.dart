@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:quissapp/examwritingpage.dart';
 import 'package:quissapp/loginpage.dart';
 
 class Userpage extends StatefulWidget {
@@ -12,7 +11,6 @@ class Userpage extends StatefulWidget {
 }
 
 class _UserpageState extends State<Userpage> {
-  List ls = ['java', 'python'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +34,6 @@ class _UserpageState extends State<Userpage> {
                       return PopupMenuItem<String>(
                           child: Column(
                         children: [
-                          // TextButton(
-                          //     onPressed: () {}, child: Text('Add Admin')),
                           TextButton(
                               onPressed: () async {
                                 await FirebaseAuth.instance.signOut();
@@ -63,88 +59,9 @@ class _UserpageState extends State<Userpage> {
             height: 630,
             width: double.infinity,
             decoration: BoxDecoration(
-                //  color: Colors.deepPurpleAccent,
                 border: Border.all(color: Colors.deepPurpleAccent),
                 borderRadius: BorderRadius.circular(15)),
             padding: EdgeInsets.only(left: 10, right: 10),
-            // child: ListView.builder(
-            //   itemCount: ls.length,
-            //   itemBuilder: (context, index) {
-            //     return GestureDetector(
-            //       onTap: () {
-            //         Navigator.push(context, MaterialPageRoute(builder: (context) => ExamWritingPage(),));
-            //         print('selected $index');
-            //       },
-            //       child: Container(
-            //         height: 70,
-            //         width: double.infinity,
-            //         margin: EdgeInsets.only(top: 15),
-            //         decoration: BoxDecoration(
-            //           border: Border.all(),
-            //           borderRadius: BorderRadius.circular(20),
-            //         ),
-            //         alignment: Alignment.center,
-            //         child: Text(
-            //           ls[index].toString(),
-            //           style: TextStyle(
-            //               fontSize: 20,
-            //               fontWeight: FontWeight.bold,
-            //               color: Colors.purple,
-            //               letterSpacing: 1),
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
-
-            // child: GridView.builder(
-            //   itemCount: ls.length,
-            //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //     crossAxisCount: 2,
-            //     crossAxisSpacing: 10,
-            //     mainAxisSpacing: 10,
-            //     childAspectRatio: 2.3 / 3,
-            //   ),
-            //   itemBuilder: (context, index) {
-            //     return GestureDetector(
-            //       onTap: () {
-            //         // Navigator.push(
-            //         //     context,
-            //         //     MaterialPageRoute(
-            //         //       builder: (context) => ExamWritingPage(),
-            //         //     ));
-            //         Navigator.pushNamed(context, "\examwitingpage",arguments: index);
-            //         print('selected $index');
-            //       },
-            //       child: Container(
-            //         height: 70,
-            //         width: double.infinity,
-            //         margin: EdgeInsets.only(top: 15),
-            //         decoration: BoxDecoration(
-            //             border: Border.all(),
-            //             color: Colors.grey.shade50,
-            //             borderRadius: BorderRadius.circular(20),
-            //             boxShadow: [
-            //               BoxShadow(
-            //                   offset: Offset(0, 3),
-            //                   blurRadius: 3,
-            //                   spreadRadius: 2,
-            //                   color: Colors.grey,
-            //                   blurStyle: BlurStyle.inner)
-            //             ]),
-            //         alignment: Alignment.center,
-            //         child: Text(
-            //           ls[index].toString(),
-            //           style: TextStyle(
-            //               fontSize: 20,
-            //               fontWeight: FontWeight.bold,
-            //               color: Colors.purple,
-            //               letterSpacing: 1),
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
             child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('topics')
@@ -160,11 +77,6 @@ class _UserpageState extends State<Userpage> {
 
                     return GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => ExamWritingPage(),
-                        //     ));
                         Navigator.pushNamed(context, "\examwitingpage",
                             arguments: todosnapshot['language'].toString());
                         print('selected $index');
@@ -175,12 +87,16 @@ class _UserpageState extends State<Userpage> {
                         margin: EdgeInsets.only(top: 15),
                         decoration: BoxDecoration(
                             border: Border.all(),
-                            color: Colors.deepPurple.shade50,
+                            // color: Colors.deepPurple.shade50,
+                            gradient:  LinearGradient(colors: [
+                              Colors.deepPurple.shade400,
+                              Colors.purple.shade500
+                            ]),
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
                                   offset: Offset(0, 3),
-                                  blurRadius: 3,
+                                  blurRadius: 15,
                                   spreadRadius: 2,
                                   color: Colors.grey,
                                   blurStyle: BlurStyle.inner)
@@ -191,63 +107,14 @@ class _UserpageState extends State<Userpage> {
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.purple,
+                              // color: Colors.purple,
+                              color: Colors.white,
                               letterSpacing: 1),
                         ),
                       ),
                     );
                   },
                 );
-                // return GridView.builder(
-                //   itemCount: ls.length,
-                //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //     crossAxisCount: 2,
-                //     crossAxisSpacing: 10,
-                //     mainAxisSpacing: 10,
-                //     childAspectRatio: 2.3 / 3,
-                //   ),
-                //   itemBuilder: (context, index) {
-                //     final DocumentSnapshot todosnapshot =
-                //         snapshot.data!.docs[index];
-                //     return GestureDetector(
-                //       onTap: () {
-                //         // Navigator.push(
-                //         //     context,
-                //         //     MaterialPageRoute(
-                //         //       builder: (context) => ExamWritingPage(),
-                //         //     ));
-                //         Navigator.pushNamed(context, "\examwitingpage",arguments:todosnapshot['language'].toString());
-                //         print('selected $index');
-                //       },
-                //       child: Container(
-                //         height: 70,
-                //         width: double.infinity,
-                //         margin: EdgeInsets.only(top: 15),
-                //         decoration: BoxDecoration(
-                //             border: Border.all(),
-                //             color: Colors.grey.shade50,
-                //             borderRadius: BorderRadius.circular(20),
-                //             boxShadow: [
-                //               BoxShadow(
-                //                   offset: Offset(0, 3),
-                //                   blurRadius: 3,
-                //                   spreadRadius: 2,
-                //                   color: Colors.grey,
-                //                   blurStyle: BlurStyle.inner)
-                //             ]),
-                //         alignment: Alignment.center,
-                //         child: Text(
-                //           todosnapshot['language'].toString(),
-                //           style: TextStyle(
-                //               fontSize: 20,
-                //               fontWeight: FontWeight.bold,
-                //               color: Colors.purple,
-                //               letterSpacing: 1),
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // );
               },
             ),
           )
